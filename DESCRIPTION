@@ -1,0 +1,10 @@
+Package: UWdataUTIL
+Type: Package
+Title: UW R Admit Data Utils
+Version: 1.1.0
+Author: Michael J Zenz
+Maintainer: Michael J Zenz <zenz@wisc.edu>
+Description: Data utilities for UW administration in R.
+License: 
+Encoding: UTF-8
+LazyData: true
