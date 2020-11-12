@@ -11,7 +11,7 @@ acad.year(Term, TermType)
   \item{Term}{Character vector containing SIS or DARS terms}
 
   \item{TermType}{The type of terms input: "SIS" or "DARS"}
-
+}
 \details{
 This function returns the Academic Year (term order is Summer, Fall, Spring) from either SIS formatted terms or DARS formatted terms.  This is formatted as the full year, without the Semester.  For instance, 2019.
 }
@@ -34,7 +34,7 @@ dars.to.sis(DARS Term)
 \arguments{
   \item{DARS Term}{Character vector containing DARS formatted Terms (eg. 20171)}
 
-
+}
 \details{
 This function returns a SIS formatted Term (eg. 1172, where term order is Fall, Spring, Summer) from a vector of DARS formatted Terms (eg. 20171).
 }
@@ -55,7 +55,7 @@ dars.to.sis(SIS Term)
 \arguments{
   \item{SIS Term}{Character vector containing SIS formatted Terms (eg. 1172)}
 
-
+}
 \details{
 This function returns a DARS formatted Term (eg. 20191, where term order is Fall, Spring, Summer) from a vector of SIS formatted Terms (eg. 1192).
 }
