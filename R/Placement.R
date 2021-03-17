@@ -1,8 +1,99 @@
 ##This function outputs a student's math placement from vectors containing the three components
 
 
-uw_math_placement <- function(MFUND, AALG, TAG, output = "numeric"){
+
+####CODE USED FOR TESTING
+
+
+
+
+
+#####
+
+
+
+
+
+
+uw.math.placement <- function(MFND, AALG, TAG, MFND_COMPONENT_ID = "MFND",  
+                              output = "numeric"){
   
+#Puts input data into a data frame  
+dt <- data.frame(MFND, AALG, TAG, MFND_COMPONENT_ID, AALG_COMPONENT_ID, TAG_COMPONENT_ID)
+
+#Sets whether the placement is new or pre-2017.  
+#This assumes that only one type are input for every row.
+dt$CURRENT <- MFND_COMPONENT_ID == "MFND"
+dt$PRE_2017 <- MFND_COMPONENT_ID == "MBSC"
+
+#This outputs a numerical representation of placement if "numeric" (default) and otherwise the full text.
+
+ifelse(output == "numeric",{
+  
+  #This table represents the current math placement table (as of 2021-03-16) with numeric values.
+  dt$output <- NA
+  dt[which((dt$CURRENT & (dt$MFND >= 150 & dt$MFND <= 355)) | 
+                      `(dt$PRE_2017 & (dt$MFND >= 150 & dt$MFND <= 355))),]$output <- 1 
+
+  dt[which((dt$CURRENT & (dt$MFND >= 356 & dt$MFND <= 465)) | 
+                      `(dt$PRE_2017 & ((dt$MFND >= 356 & dt$MFND <= 405) | (dt$ALLG >= 150 & dt$AALG <= 415)))),]$output <- 2 
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 150 & dt$AALG <= 485) & (dt$TAG >= 150 & dt$TAG <= 555 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 416 & dt$AALG <= 495) & (dt$TAG >= 150 & dt$TAG <= 565 ))))),]$output <- 3
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 150 & dt$AALG <= 485) & (dt$TAG >= 556 & dt$TAG <= 850 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 416 & dt$AALG <= 495) & (dt$TAG >= 566 & dt$TAG <= 850 ))))),]$output <- 4
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 486 & dt$AALG <= 535) & (dt$TAG >= 150 & dt$TAG <= 555 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 496 & dt$AALG <= 565) & (dt$TAG >= 150 & dt$TAG <= 565 ))))),]$output <- 5
+  
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 486 & dt$AALG <= 535) & (dt$TAG >= 556 & dt$TAG <= 850 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 496 & dt$AALG <= 565) & (dt$TAG >= 566 & dt$TAG <= 850 ))))),]$output <- 6
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 536 & dt$AALG <= 850) & (dt$TAG >= 150 & dt$TAG <= 555 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 566 & dt$AALG <= 850) & (dt$TAG >= 150 & dt$TAG <= 565 ))))),]$output <- 7
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 536 & dt$AALG <= 850) & (dt$TAG >= 556 & dt$TAG <= 850 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 566 & dt$AALG <= 850) & (dt$TAG >= 566 & dt$TAG <= 850 ))))),]$output <- 8
+  
+},
+{
+  
+  
+  #This table represents the current math placement table (as of 2021-03-16) with text.
+  #Text refers to the current placements.
+  dt$output <- NA
+  dt[which((dt$CURRENT & (dt$MFND >= 150 & dt$MFND <= 355)) | 
+             `(dt$PRE_2017 & (dt$MFND >= 150 & dt$MFND <= 355))),]$output <- "MATH 96" 
+  
+  dt[which((dt$CURRENT & (dt$MFND >= 356 & dt$MFND <= 465)) | 
+             `(dt$PRE_2017 & ((dt$MFND >= 356 & dt$MFND <= 405) | (dt$ALLG >= 150 & dt$AALG <= 415)))),]$output <- "MATH 96 or MATH 141." 
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 150 & dt$AALG <= 485) & (dt$TAG >= 150 & dt$TAG <= 555 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 416 & dt$AALG <= 495) & (dt$TAG >= 150 & dt$TAG <= 565 ))))),]$output <- "MATH 112 (followed by MATH 113 for MATH 221) or MATH 130"
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 150 & dt$AALG <= 485) & (dt$TAG >= 556 & dt$TAG <= 850 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 416 & dt$AALG <= 495) & (dt$TAG >= 566 & dt$TAG <= 850 ))))),]$output <- "MATH 112 (will not need MATH 113 for MATH 221) or MATH 114 or MATH 130 or MATH 171/217 sequence (must take both courses and is equivalent to MATH 114 and MATH 221)"
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 486 & dt$AALG <= 535) & (dt$TAG >= 150 & dt$TAG <= 555 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 496 & dt$AALG <= 565) & (dt$TAG >= 150 & dt$TAG <= 565 ))))),]$output <- "MATH 114 or MATH 112 (followed by MATH 113 for MATH 221) or MATH 130 or MATH 171/217 sequence (must take both courses and is equivalent to MATH 114 and MATH 221).[QR-A satisfied]"
+  
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 486 & dt$AALG <= 535) & (dt$TAG >= 556 & dt$TAG <= 850 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 496 & dt$AALG <= 565) & (dt$TAG >= 566 & dt$TAG <= 850 ))))),]$output <- "MATH 112 (will not need MATH 113 for MATH 221) or MATH 114 or MATH 130 or MATH 171/217 sequence (must take both courses and is equivalent to MATH 114 and MATH 221).[QR-A satisfied]"
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 536 & dt$AALG <= 850) & (dt$TAG >= 150 & dt$TAG <= 555 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 566 & dt$AALG <= 850) & (dt$TAG >= 150 & dt$TAG <= 565 ))))),]$output <- "MATH 113 (will not need MATH 112 for MATH 221) or MATH 130 or MATH 211 or MATH 114 or MATH 171/217 sequence (must take both courses and is equivalent to MATH 114 and MATH 221).[QR-A satisfied]"
+  
+  dt[which((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG >= 536 & dt$AALG <= 850) & (dt$TAG >= 556 & dt$TAG <= 850 )))) | 
+             (dt$PRE_2017 & ((dt$MFND >= 406 & dt$MFND <= 850) & ((dt$AALG >= 566 & dt$AALG <= 850) & (dt$TAG >= 566 & dt$TAG <= 850 ))))),]$output <- " 	MATH 130 or MATH 211 or MATH 221 [QR-A satisfied]"
+  
+  
+  
+  
+  
+})
   
   
   
@@ -18,86 +109,3 @@ uw_math_placement <- function(MFUND, AALG, TAG, output = "numeric"){
 
 
 
-
-
-
-
-PLACEMENTData$TEST_TYPE <- NA
-PLACEMENTData[which(PLACEMENTData$TEST_COMPONENT_ID %in% c("MBSC", "MFND")),]$TEST_TYPE <- "MATH_BASIC"
-PLACEMENTData[which(PLACEMENTData$TEST_COMPONENT_ID %in% c("ALG", "AALG")),]$TEST_TYPE <- "MATH_ALG"
-PLACEMENTData[which(PLACEMENTData$TEST_COMPONENT_ID %in% c("TRG", "TAG")),]$TEST_TYPE <- "MATH_TRIG"
-PLACEMENTData[which(PLACEMENTData$TEST_COMPONENT_ID %in% c("ENGL", "UWEPT")),]$TEST_TYPE <- "ENGLISH"
-
-PLACEMENTData <- PLACEMENTData[which((PLACEMENTData$TEST_SCORE > 149) & (PLACEMENTData$TEST_SCORE < 851)),]
-
-
-
-#BEST_PLACEMENT <-  aggregate(PLACEMENTData$TEST_SCORE, by = list(PLACEMENTData$ID, PLACEMENTData$TestType), FUN = max)
-#colnames(BEST_PLACEMENT) <- c("ID", "TestType", "TEST_SCORE")
-#PLACEMENTData <- merge(x = PLACEMENTData, y = BEST_PLACEMENT, by = c("ID", "TestType", "TEST_SCORE"))
-
-
-PLACEMENTDataSHORT <- PLACEMENTData[,c("ID", "TEST_SCORE", "TEST_TYPE")]
-PLACEMENTDataSHORT <- dcast(PLACEMENTDataSHORT, ID ~ TEST_TYPE, value.var = "TEST_SCORE", fun.aggregate = max, na.rm = TRUE)
-
-
-#colnames(PLACEMENTData) <- c("CAMPUS_ID", "ALG_MATH_TEST", "BASIC_MATH_TEST", "TRIG_MATH_TEST")
-# PLACEMENTDataSHORT[which(PLACEMENTDataSHORT$ENGLISH < 0),]$ENGLISH <- NA
-# PLACEMENTDataSHORT[which(PLACEMENTDataSHORT$MATH_ALG < 0),]$MATH_ALG <- NA
-# PLACEMENTDataSHORT[which(PLACEMENTDataSHORT$MATH_BASIC < 0),]$MATH_BASIC <- NA
-# PLACEMENTDataSHORT[which(PLACEMENTDataSHORT$MATH_TRIG < 0),]$MATH_TRIG <- NA
-PLACEMENTDataSHORT$COMB <- PLACEMENTDataSHORT$ENGLISH + PLACEMENTDataSHORT$MATH_ALG
-
-
-
-# PLACEMENTDataSHORT$MATH_COURSE <- "MATH 130 or MATH 211 or MATH 221 [QR-A satisfied]"
-# PLACEMENTDataSHORT[which(PLACEMENTDataSHORT$MATH_BASIC >= 150 & PLACEMENTDataSHORT$MATH_BASIC <= 355),]$MATH_COURSE <- "MATH 96"
-# PLACEMENTDataSHORT[which(PLACEMENTDataSHORT$MATH_BASIC >= 356 & PLACEMENTDataSHORT$MATH_BASIC <= 465),]$MATH_COURSE <- "MATH 96 or MATH 141"
-# PLACEMENTDataSHORT[which((PLACEMENTDataSHORT$MATH_BASIC >= 486 & PLACEMENTDataSHORT$MATH_BASIC <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_ALG >= 150 & PLACEMENTDataSHORT$MATH_ALG <= 485)
-#                          & (PLACEMENTDataSHORT$MATH_TRIG >= 150 & PLACEMENTDataSHORT$MATH_TRIG <= 555))
-#                    ,]$MATH_COURSE <-"MATH 112 (followed by MATH 113 for MATH 221) or MATH 130"
-# PLACEMENTDataSHORT[which((PLACEMENTDataSHORT$MATH_BASIC >= 486 & PLACEMENTDataSHORT$MATH_BASIC <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_ALG >= 150 & PLACEMENTDataSHORT$MATH_ALG <= 485)
-#                          & (PLACEMENTDataSHORT$MATH_TRIG >= 556 & PLACEMENTDataSHORT$MATH_TRIG <= 850))
-#                    ,]$MATH_COURSE <- "MATH 112 (will not need MATH 113 for MATH 221) or MATH 114 or MATH 130 or MATH 171/217 sequence"
-# PLACEMENTDataSHORT[which((PLACEMENTDataSHORT$MATH_BASIC >= 486 & PLACEMENTDataSHORT$MATH_BASIC <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_ALG >= 486 & PLACEMENTDataSHORT$MATH_ALG <= 535)
-#                          & (PLACEMENTDataSHORT$MATH_TRIG >= 150 & PLACEMENTDataSHORT$MATH_TRIG <= 555))
-#                    ,]$MATH_COURSE <- "MATH 112 or MATH 114 or MATH 130 or MATH 171/217 sequence [QR-A Satisfied]"
-# PLACEMENTDataSHORT[which((PLACEMENTDataSHORT$MATH_BASIC >= 486 & PLACEMENTDataSHORT$MATH_BASIC <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_ALG >= 486 & PLACEMENTDataSHORT$MATH_ALG <= 535)
-#                          & (PLACEMENTDataSHORT$MATH_TRIG >= 556 & PLACEMENTDataSHORT$MATH_TRIG <= 850))
-#                    ,]$MATH_COURSE <- "MATH 112 (will not need MATH 113 for MATH 221) or MATH 114 or MATH 130 or MATH 171/217 sequence [QR-A Satisfied]"
-# PLACEMENTDataSHORT[which((PLACEMENTDataSHORT$MATH_BASIC >= 486 & PLACEMENTDataSHORT$MATH_BASIC <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_ALG >= 536 & PLACEMENTDataSHORT$MATH_ALG <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_TRIG >= 150 & PLACEMENTDataSHORT$MATH_TRIG <= 555))
-#                    ,]$MATH_COURSE <- "MATH 113 or MATH 130 or MATH 211 or MATH 114 or MATH 171/217 sequence [QR-A Satisfied]"
-# PLACEMENTDataSHORT[which((PLACEMENTDataSHORT$MATH_BASIC >= 486 & PLACEMENTDataSHORT$MATH_BASIC <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_ALG >= 536 & PLACEMENTDataSHORT$MATH_ALG <= 850)
-#                          & (PLACEMENTDataSHORT$MATH_TRIG >= 556 & PLACEMENTDataSHORT$MATH_TRIG <= 850))
-#                    ,]$MATH_COURSE <- "MATH 130 or MATH 211 or MATH 221 [QR-A satisfied]"
-#
-
-PLACEMENTCourse <- PLACEMENTDataSHORT %>%
-  mutate(MATH_COURSE = case_when(MATH_BASIC >= 150 & MATH_BASIC <= 355 ~ "MATH 96",
-                                 MATH_BASIC >= 356 & MATH_BASIC <= 465 ~ "MATH 96 or MATH 141",
-                                 (MATH_BASIC >= 466 & MATH_BASIC <= 850) &
-                                   (MATH_ALG >= 150 & MATH_ALG <= 485) &
-                                   (MATH_TRIG >= 150 & MATH_TRIG <= 555) ~ "MATH 112 (followed by MATH 113 for MATH 221) or MATH 130",
-                                 (MATH_BASIC >= 486 & MATH_BASIC <= 850) &
-                                   (MATH_ALG >= 150 & MATH_ALG <= 485) &
-                                   (MATH_TRIG >= 556 & MATH_TRIG <= 850) ~ "MATH 112 (will not need MATH 113 for MATH 221) or MATH 114 or MATH 130 or MATH 171/217 sequence",
-                                 (MATH_BASIC >= 466 & MATH_BASIC <= 850) &
-                                   (MATH_ALG >= 486 & MATH_ALG <= 535) &
-                                   (MATH_TRIG >= 150 & MATH_TRIG <= 555) ~ "MATH 112 or MATH 114 or MATH 130 or MATH 171/217 sequence [QR-A Satisfied]",
-                                 (MATH_BASIC >= 466 & MATH_BASIC <= 850) &
-                                   (MATH_ALG >= 486 & MATH_ALG <= 535) &
-                                   (MATH_TRIG >= 556 & MATH_TRIG <= 850) ~ "MATH 112 (will not need MATH 113 for MATH 221) or MATH 114 or MATH 130 or MATH 171/217 sequence [QR-A Satisfied]",
-                                 (MATH_BASIC >= 466 & MATH_BASIC <= 850) &
-                                   (MATH_ALG >= 536 & MATH_ALG <= 850) &
-                                   (MATH_TRIG >= 150 & MATH_TRIG <= 555) ~ "MATH 113 or MATH 130 or MATH 211 or MATH 114 or MATH 171/217 sequence [QR-A Satisfied]",
-                                 (MATH_BASIC >= 466 & MATH_BASIC <= 850) &
-                                   (MATH_ALG >= 536 & MATH_ALG <= 850) &
-                                   (MATH_TRIG >= 556 & MATH_TRIG <= 850) ~ "MATH 130 or MATH 211 or MATH 221 [QR-A satisfied]"
-  ))
