@@ -85,7 +85,7 @@ dt$output <- ifelse((dt$CURRENT & ((dt$MFND >= 466 & dt$MFND <= 850) & ((dt$AALG
  
   
   dt$output <- ifelse(((dt$CURRENT & (dt$MFND >= 150 & dt$MFND <= 355)) | 
-                         (dt$PRE_2017 & (dt$MFND >= 150 & dt$MFND <= 355))),"MATH 96",NA)
+                         (dt$PRE_2017 & (dt$MFND >= 150 & dt$MFND <= 355))),"MATH 96",dt$output)
   
   dt$output <- ifelse((dt$CURRENT & (dt$MFND >= 356 & dt$MFND <= 465)) | 
                         (dt$PRE_2017 & ((dt$MFND >= 356 & dt$MFND <= 405) | (dt$AALG >= 150 & dt$AALG <= 415))), "MATH 96 or MATH 141." , dt$output)
